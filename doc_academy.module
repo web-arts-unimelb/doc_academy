@@ -1,0 +1,43 @@
+<?php
+
+/*
+ * hook_url_inbound_alter
+ */
+function doc_academy_url_inbound_alter(&$path, $original_path, $path_language) {
+	global $user;
+	
+	$test_path = 'doctoral-academy-form';
+	if($original_path === $test_path) {
+
+		if($user->uid === 0) {
+			drupal_goto('user', array('query' => drupal_get_destination()) );		
+		}
+		else {
+			$roles = $user->roles;
+
+			// List from roles table in arts website
+			$allowed = array(
+				'academic staff',
+				'professional staff',
+				'postgraduate',
+				'staff',
+				'editor',
+				'admin',
+				'site admin',
+				'importer',
+				'webformer',
+			);
+
+			$inter = array_intersect($roles, $allowed);
+	
+			if(count($inter) > 0) {
+				// Pass	
+			}
+			else {
+				$msg = "You don't have permission to access ". $test_path;
+				drupal_set_message($msg, 'error');
+				drupal_goto('user');
+			}
+		}
+	}
+}
