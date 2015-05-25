@@ -3,12 +3,14 @@
 /*
  * hook_url_inbound_alter
  */
-function doc_academy_url_inbound_alter(&$path, $original_path, $path_language) {
+//function doc_academy_url_inbound_alter(&$path, $original_path, $path_language) {
+function doc_academy_init() {
 	global $user;
-	
-	$test_path = 'doctoral-academy-form';
-	if($original_path === $test_path) {
+	$original_path = current_path();
 
+	//$test_path = 'doctoral-academy-form';
+  $test_path = 'node/14581';
+	if($original_path === $test_path) {
 		if($user->uid === 0) {
 			drupal_goto('user', array('query' => drupal_get_destination()) );		
 		}
@@ -29,7 +31,11 @@ function doc_academy_url_inbound_alter(&$path, $original_path, $path_language) {
 			);
 
 			$inter = array_intersect($roles, $allowed);
-	
+
+			//test
+			//dsm($roles);
+			//dsm($inter);	
+
 			if(count($inter) > 0) {
 				// Pass	
 			}
